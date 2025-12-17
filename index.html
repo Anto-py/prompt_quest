@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPT QUEST — RoTaConFor Training</title>
+    <style>
+        /* ============================================
+           PALETTE RETROFUTURISME
+           ============================================ */
+        :root {
+            --retro-teal: #127676;
+            --retro-orange: #E4632E;
+            --retro-jaune: #E3A535;
+            --retro-ink: #0D1617;
+            --retro-paper: #F2EFE6;
+            
+            --retro-font-titre: 'Impact', 'Arial Black', sans-serif;
+            --retro-font-corps: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --retro-spacing-titre: 0.1em;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--retro-font-corps);
+            background-color: var(--retro-paper);
+            color: var(--retro-ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-wrapper {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           CADRE PÉRIPHÉRIQUE
+           ============================================ */
+        .retro-page-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 3px solid var(--retro-orange);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .retro-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .retro-corner::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--retro-orange);
+        }
+
+        .retro-corner::after {
+            content: '';
+            position: absolute;
+            background: var(--retro-teal);
+            width: 2px;
+            height: 20px;
+        }
+
+        .retro-corner-tl {
+            top: 0;
+            left: 0;
+        }
+        .retro-corner-tl::before { top: -6px; left: -6px; }
+        .retro-corner-tl::after { top: 10px; left: 10px; transform: rotate(45deg); }
+
+        .retro-corner-tr {
+            top: 0;
+            right: 0;
+        }
+        .retro-corner-tr::before { top: -6px; right: -6px; }
+        .retro-corner-tr::after { top: 10px; right: 10px; transform: rotate(-45deg); }
+
+        .retro-corner-bl {
+            bottom: 0;
+            left: 0;
+        }
+        .retro-corner-bl::before { bottom: -6px; left: -6px; }
+        .retro-corner-bl::after { bottom: 10px; left: 10px; transform: rotate(-45deg); }
+
+        .retro-corner-br {
+            bottom: 0;
+            right: 0;
+        }
+        .retro-corner-br::before { bottom: -6px; right: -6px; }
+        .retro-corner-br::after { bottom: 10px; right: 10px; transform: rotate(45deg); }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .retro-header {
+            background-color: var(--retro-ink);
+            color: var(--retro-paper);
+            padding: 3rem 2rem 2rem 2rem;
+            border-bottom: 4px solid var(--retro-orange);
+            text-align: center;
+        }
+
+        .retro-header h1 {
+            font-family: var(--retro-font-titre);
+            font-size: 3rem;
+            letter-spacing: var(--retro-spacing-titre);
+            text-transform: uppercase;
+            color: var(--retro-jaune);
+            margin-bottom: 0.5rem;
+        }
+
+        .retro-header .subtitle {
+            color: var(--retro-teal);
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .retro-header .tagline {
+            color: var(--retro-paper);
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+        /* ============================================
+           NAVIGATION PRINCIPALE
+           ============================================ */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-portal {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            background: var(--retro-paper);
+            border: 4px solid var(--retro-teal);
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                12px 0, calc(100% - 12px) 0, 100% 12px,
+                100% calc(100% - 12px), calc(100% - 12px) 100%,
+                12px 100%, 0 calc(100% - 12px), 0 12px
+            );
+            position: relative;
+        }
+
+        .nav-portal::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 2px solid var(--retro-orange);
+            clip-path: polygon(
+                8px 0, calc(100% - 8px) 0, 100% 8px,
+                100% calc(100% - 8px), calc(100% - 8px) 100%,
+                8px 100%, 0 calc(100% - 8px), 0 8px
+            );
+            pointer-events: none;
+        }
+
+        .nav-portal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-portal.pratique:hover {
+            border-color: var(--retro-orange);
+        }
+
+        .nav-portal.apprendre:hover {
+            border-color: var(--retro-teal);
+        }
+
+        .nav-portal.creer:hover {
+            border-color: var(--retro-jaune);
+        }
+
+        .portal-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .nav-portal.pratique .portal-icon { color: var(--retro-orange); }
+        .nav-portal.apprendre .portal-icon { color: var(--retro-teal); }
+        .nav-portal.creer .portal-icon { color: var(--retro-jaune); }
+
+        .portal-title {
+            font-family: var(--retro-font-titre);
+            font-size: 1.8rem;
+            text-align: center;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .portal-desc {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--retro-ink);
+        }
+
+        /* ============================================
+           GRILLE DE NIVEAUX
+           ============================================ */
+        .levels-container {
+            display: none;
+            padding: 2rem;
+            background: var(--retro-ink);
+            border: 3px solid var(--retro-teal);
+        }
+
+        .levels-container.active {
+            display: block;
+        }
+
+        .levels-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .levels-header h2 {
+            font-family: var(--retro-font-titre);
+            font-size: 2rem;
+            letter-spacing: var(--retro-spacing-titre);
+            text-transform: uppercase;
+            color: var(--retro-jaune);
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--retro-teal);
+            text-decoration: none;
+            font-family: var(--retro-font-titre);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--retro-jaune);
+            color: var(--retro-ink);
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .level-card {
+            background: var(--retro-paper);
+            border: 3px solid var(--retro-teal);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                10px 0, calc(100% - 10px) 0, 100% 10px,
+                100% calc(100% - 10px), calc(100% - 10px) 100%,
+                10px 100%, 0 calc(100% - 10px), 0 10px
+            );
+        }
+
+        .level-card:hover {
+            transform: scale(1.05);
+            border-color: var(--retro-orange);
+        }
+
+        .level-title {
+            font-family: var(--retro-font-titre);
+            font-size: 1.3rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--retro-teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .level-stars {
+            color: var(--retro-jaune);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .level-desc {
+            font-size: 0.9rem;
+            color: var(--retro-ink);
+        }
+
+        /* ============================================
+           MODAL DE CAS PRATIQUE
+           ============================================ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 22, 23, 0.9);
+            z-index: 10001;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .modal-content {
+            background: var(--retro-paper);
+            border: 4px solid var(--retro-teal);
+            max-width: 800px;
+            width: 100%;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            position: relative;
+            clip-path: polygon(
+                15px 0, calc(100% - 15px) 0, 100% 15px,
+                100% calc(100% - 15px), calc(100% - 15px) 100%,
+                15px 100%, 0 calc(100% - 15px), 0 15px
+            );
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 2px solid var(--retro-orange);
+            clip-path: polygon(
+                12px 0, calc(100% - 12px) 0, 100% 12px,
+                100% calc(100% - 12px), calc(100% - 12px) 100%,
+                12px 100%, 0 calc(100% - 12px), 0 12px
+            );
+            pointer-events: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            border: 2px solid var(--retro-teal);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .close-modal:hover {
+            background: var(--retro-jaune);
+            color: var(--retro-ink);
+        }
+
+        .case-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, var(--retro-teal), var(--retro-orange), var(--retro-jaune)) 1;
+        }
+
+        .case-type {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: 2px solid;
+            font-family: var(--retro-font-titre);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .case-type.pratique {
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            border-color: var(--retro-teal);
+        }
+
+        .case-type.apprendre {
+            background: var(--retro-teal);
+            color: var(--retro-paper);
+            border-color: var(--retro-orange);
+        }
+
+        .case-type.creer {
+            background: var(--retro-jaune);
+            color: var(--retro-ink);
+            border-color: var(--retro-teal);
+        }
+
+        .case-title {
+            font-family: var(--retro-font-titre);
+            font-size: 2rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--retro-ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .case-level {
+            color: var(--retro-jaune);
+            font-size: 1.2rem;
+        }
+
+        .case-content {
+            margin-top: 2rem;
+        }
+
+        .case-content h3 {
+            font-family: var(--retro-font-titre);
+            font-size: 1.3rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--retro-teal);
+            margin: 2rem 0 1rem 0;
+        }
+
+        .case-content p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .case-consigne {
+            background: rgba(18, 118, 118, 0.1);
+            border-left: 4px solid var(--retro-teal);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-weight: 500;
+        }
+
+        .case-arrow {
+            color: var(--retro-orange);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .grille-eval {
+            background: var(--retro-ink);
+            color: var(--retro-paper);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 2px solid var(--retro-teal);
+        }
+
+        .grille-eval h4 {
+            font-family: var(--retro-font-titre);
+            color: var(--retro-jaune);
+            margin-bottom: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .grille-eval ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .grille-eval li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(242, 239, 230, 0.2);
+        }
+
+        .grille-eval li:last-child {
+            border-bottom: none;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .retro-footer {
+            background-color: var(--retro-teal);
+            color: var(--retro-paper);
+            padding: 2rem;
+            border-top: 4px solid var(--retro-jaune);
+            text-align: center;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .retro-header h1 {
+                font-size: 2rem;
+            }
+
+            .main-nav {
+                flex-direction: column;
+            }
+
+            .nav-portal {
+                max-width: 100%;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .case-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Cadre périphérique -->
+        <div class="retro-page-frame"></div>
+        <div class="retro-corner retro-corner-tl"></div>
+        <div class="retro-corner retro-corner-tr"></div>
+        <div class="retro-corner retro-corner-bl"></div>
+        <div class="retro-corner retro-corner-br"></div>
+
+    <!-- Header -->
+    <header class="retro-header">
+        <h1>PROMPT QUEST</h1>
+        <div class="subtitle">RoTaConFor Training Camp</div>
+        <p class="tagline">Maîtrise l'art du prompting — 15 cas pratiques pour devenir un expert</p>
+    </header>
+
+    <!-- Navigation principale -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-portal pratique" onclick="showCategory('pratique')">
+            <div class="portal-icon">🎯</div>
+            <div class="portal-title">PRATIQUE</div>
+            <div class="portal-desc">Résoudre des vrais problèmes du quotidien</div>
+        </div>
+
+        <div class="nav-portal apprendre" onclick="showCategory('apprendre')">
+            <div class="portal-icon">🧠</div>
+            <div class="portal-title">APPRENDRE</div>
+            <div class="portal-desc">Booster ton cerveau et tes compétences</div>
+        </div>
+
+        <div class="nav-portal creer" onclick="showCategory('creer')">
+            <div class="portal-icon">🎨</div>
+            <div class="portal-title">CRÉER</div>
+            <div class="portal-desc">Inventer des trucs cool et originaux</div>
+        </div>
+    </nav>
+
+    <!-- Containers de niveaux (un par catégorie) -->
+    <div id="pratiqueContainer" class="levels-container">
+        <div class="levels-header">
+            <h2>🎯 PRATIQUE — Résoudre des problèmes</h2>
+            <button class="back-btn" onclick="backToMain()">← Retour</button>
+        </div>
+        <div class="levels-grid" id="pratiqueGrid"></div>
+    </div>
+
+    <div id="apprendreContainer" class="levels-container">
+        <div class="levels-header">
+            <h2>🧠 APPRENDRE — Développer tes compétences</h2>
+            <button class="back-btn" onclick="backToMain()">← Retour</button>
+        </div>
+        <div class="levels-grid" id="apprendreGrid"></div>
+    </div>
+
+    <div id="creerContainer" class="levels-container">
+        <div class="levels-header">
+            <h2>🎨 CRÉER — Inventer et imaginer</h2>
+            <button class="back-btn" onclick="backToMain()">← Retour</button>
+        </div>
+        <div class="levels-grid" id="creerGrid"></div>
+    </div>
+
+    <!-- Modal pour afficher les cas -->
+    <div id="caseModal" class="modal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closeModal()">✕</div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="retro-footer">
+        <p>PROMPT QUEST © 2025 — Formation IA & Prompting</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">
+            Modèle RoTaConFor : Rôle - Tâche - Contexte - Format
+        </p>
+    </footer>
+    </div><!-- Fin page-wrapper -->
+
+    <script>
+        // Base de données des 15 cas pratiques
+        const casesData = {
+            pratique: [
+                {
+                    level: 1,
+                    title: "Le CV qui cartonne",
+                    description: "Tu dois postuler pour un job d'été dans un magasin de sport. Tu as fait du basket pendant 5 ans et tu es délégué de classe.",
+                    consigne: "Écris un prompt pour que l'IA t'aide à rédiger un CV.",
+                    eval: [
+                        "Clarté du rôle (0-2 pts)",
+                        "Précision de la tâche (0-2 pts)",
+                        "Richesse du contexte (0-3 pts)",
+                        "Pertinence du format (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 2,
+                    title: "Révision express",
+                    description: "Tu as un contrôle de maths demain sur les équations du second degré. Tu comprends la théorie mais tu bloques sur les exercices.",
+                    consigne: "Écris un prompt pour que l'IA te crée des exercices d'entraînement.",
+                    eval: [
+                        "Clarté du rôle (0-2 pts)",
+                        "Précision de la tâche (0-2 pts)",
+                        "Richesse du contexte (0-3 pts)",
+                        "Pertinence du format (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 3,
+                    title: "Le speech qui tue",
+                    description: "Tu es délégué et tu dois présenter une proposition au conseil de classe : installer un distributeur de snacks sains dans l'école. Le directeur est plutôt strict sur le budget.",
+                    consigne: "Écris un prompt pour préparer ton argumentation.",
+                    eval: [
+                        "Clarté du rôle (0-2 pts)",
+                        "Précision de la tâche (0-2 pts)",
+                        "Richesse du contexte (0-3 pts)",
+                        "Pertinence du format (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 4,
+                    title: "Projet technique",
+                    description: "Ton groupe doit créer une maquette de maison écologique pour un projet d'arts. Vous avez du carton, de la colle, des bouteilles en plastique. Budget : 20€. Deadline : 2 semaines.",
+                    consigne: "Écris un prompt pour obtenir des idées de conception.",
+                    eval: [
+                        "Clarté du rôle (0-2 pts)",
+                        "Précision de la tâche (0-2 pts)",
+                        "Richesse du contexte (0-3 pts)",
+                        "Pertinence du format (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 5,
+                    title: "Le post viral",
+                    description: "Tu veux créer un post Instagram pour sensibiliser tes potes à l'impact écologique du streaming vidéo. Tu veux que ce soit percutant, pas moralisateur, et avec des chiffres qui marquent.",
+                    consigne: "Écris un prompt pour obtenir du contenu adapté.",
+                    eval: [
+                        "Clarté du rôle (0-2 pts)",
+                        "Précision de la tâche (0-2 pts)",
+                        "Richesse du contexte (0-3 pts)",
+                        "Pertinence du format (0-3 pts)"
+                    ]
+                }
+            ],
+            apprendre: [
+                {
+                    level: 1,
+                    title: "Comprendre enfin les fractions",
+                    description: "Tu bloques depuis toujours sur les fractions. Quand tu vois 3/4 + 2/3, tu paniques. Tu as besoin de comprendre la logique, pas juste la formule.",
+                    consigne: "Écris un prompt pour que l'IA t'explique avec une méthode qui te correspond.",
+                    eval: [
+                        "Autonomie préservée (0-3 pts) : Le prompt demande de l'aide pour apprendre ou de faire le travail ?",
+                        "Métacognition (0-2 pts) : Le prompt montre une conscience de 'comment j'apprends' ?",
+                        "Feedback intégré (0-2 pts) : Le prompt prévoit un système de vérification ?",
+                        "Clarté du contexte (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 2,
+                    title: "Mémoriser du vocabulaire efficacement",
+                    description: "Tu dois apprendre 50 mots d'anglais pour vendredi. Tu as déjà essayé de les lire en boucle mais ça ne rentre pas. Tu préfères apprendre en faisant des associations visuelles ou des histoires.",
+                    consigne: "Écris un prompt pour que l'IA t'aide à mémoriser selon ton style d'apprentissage.",
+                    eval: [
+                        "Autonomie préservée (0-3 pts)",
+                        "Métacognition (0-2 pts)",
+                        "Feedback intégré (0-2 pts)",
+                        "Clarté du contexte (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 3,
+                    title: "Décrypter un texte compliqué",
+                    description: "En français, vous étudiez un extrait de Rabelais. C'est du français du 16ème siècle et tu ne comprends rien. Tu dois en faire un résumé et expliquer le message de l'auteur. Tu as tendance à mieux comprendre quand on te raconte une histoire moderne d'abord.",
+                    consigne: "Écris un prompt pour que l'IA t'aide à décoder le texte sans faire le travail à ta place.",
+                    eval: [
+                        "Autonomie préservée (0-3 pts)",
+                        "Métacognition (0-2 pts)",
+                        "Feedback intégré (0-2 pts)",
+                        "Clarté du contexte (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 4,
+                    title: "Créer ses propres exercices de chimie",
+                    description: "Tu as un test sur les liaisons chimiques la semaine prochaine. Le prof a donné 5 exercices types mais tu voudrais t'entraîner sur 10 exercices supplémentaires du même niveau, avec les corrections détaillées pour vérifier ta compréhension.",
+                    consigne: "Écris un prompt pour générer tes propres exercices d'entraînement.",
+                    eval: [
+                        "Autonomie préservée (0-3 pts)",
+                        "Métacognition (0-2 pts)",
+                        "Feedback intégré (0-2 pts)",
+                        "Clarté du contexte (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 5,
+                    title: "Préparer un oral avec feedback",
+                    description: "Tu dois présenter ton stage de 3ème devant la classe (5 minutes). Tu stresses pour les oraux et tu as tendance à te perdre dans tes idées. Tu veux préparer ton discours structuré ET obtenir des conseils pour gérer ton stress et rendre ta présentation claire et impactante.",
+                    consigne: "Écris un prompt pour préparer ton oral ET améliorer ta prestation.",
+                    eval: [
+                        "Autonomie préservée (0-3 pts)",
+                        "Métacognition (0-2 pts)",
+                        "Feedback intégré (0-2 pts)",
+                        "Clarité du contexte (0-3 pts)"
+                    ]
+                }
+            ],
+            creer: [
+                {
+                    level: 1,
+                    title: "Trouver un nom de groupe de musique",
+                    description: "Vous venez de former un groupe avec tes potes. Vous jouez du rock alternatif avec des influences rap. Vous voulez un nom qui sonne bien, qui a du sens, et qui n'est pas déjà pris par 50 autres groupes.",
+                    consigne: "Écris un prompt pour que l'IA vous propose des idées de noms originaux.",
+                    eval: [
+                        "Co-création équilibrée (0-3 pts) : collaboration créative ou délégation totale ?",
+                        "Itération prévue (0-2 pts) : dialogue créatif prévu ?",
+                        "Contraintes créatives (0-2 pts) : cadre stimulant ?",
+                        "Appropriation (0-3 pts) : le résultat sera vraiment à toi ?"
+                    ]
+                },
+                {
+                    level: 2,
+                    title: "Inventer un jeu de société",
+                    description: "Pour ton projet d'arts, tu dois créer un jeu de société original sur le thème 'voyage dans le temps'. Tu as quelques idées vagues (cartes, plateau, dés) mais tu ne sais pas comment les assembler pour que ce soit fun.",
+                    consigne: "Écris un prompt pour que l'IA te lance des pistes créatives.",
+                    eval: [
+                        "Co-création équilibrée (0-3 pts)",
+                        "Itération prévue (0-2 pts)",
+                        "Contraintes créatives (0-2 pts)",
+                        "Appropriation (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 3,
+                    title: "Créer un logo pour la mini-entreprise",
+                    description: "Ta mini-entreprise vend des objets fabriqués à partir de matériaux recyclés (bracelets, porte-clés, déco). Vous vous appelez 'ReCréa'. Vous voulez un logo moderne, coloré, qui montre l'aspect écolo ET créatif. Vous n'avez aucune compétence en design.",
+                    consigne: "Écris un prompt pour que l'IA vous aide à conceptualiser votre logo (description détaillée que vous pourrez donner à quelqu'un qui dessine ou utiliser dans un générateur d'images).",
+                    eval: [
+                        "Co-création équilibrée (0-3 pts)",
+                        "Itération prévue (0-2 pts)",
+                        "Contraintes créatives (0-2 pts)",
+                        "Appropriation (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 4,
+                    title: "Écrire une nouvelle à plusieurs mains",
+                    description: "Tu dois écrire une nouvelle de 3 pages pour le cours de français. Thème imposé : 'Une rencontre inattendue'. Tu as une idée de départ (quelqu'un trouve un objet bizarre dans son casier) mais tu sèches pour la suite. Tu veux que l'IA te propose des rebondissements, mais tu veux garder le contrôle de l'histoire.",
+                    consigne: "Écris un prompt pour que l'IA devienne ton co-auteur créatif.",
+                    eval: [
+                        "Co-création équilibrée (0-3 pts)",
+                        "Itération prévue (0-2 pts)",
+                        "Contraintes créatives (0-2 pts)",
+                        "Appropriation (0-3 pts)"
+                    ]
+                },
+                {
+                    level: 5,
+                    title: "Inventer un concept de vidéo YouTube",
+                    description: "Tu veux lancer une chaîne YouTube sur un thème qui te passionne (gaming, cuisine, science, musique...). Tu as déjà vu 1000 chaînes similaires et tu veux trouver un angle original, une série de vidéos avec un concept qui te démarque. Tu as du matériel basique (smartphone, micro).",
+                    consigne: "Écris un prompt pour que l'IA t'aide à brainstormer des concepts uniques.",
+                    eval: [
+                        "Co-création équilibrée (0-3 pts)",
+                        "Itération prévue (0-2 pts)",
+                        "Contraintes créatives (0-2 pts)",
+                        "Appropriation (0-3 pts)"
+                    ]
+                }
+            ]
+        };
+
+        // Génération dynamique des cartes de niveau
+        function generateLevelCards() {
+            const categories = ['pratique', 'apprendre', 'creer'];
+            
+            categories.forEach(category => {
+                const grid = document.getElementById(`${category}Grid`);
+                const cases = casesData[category];
+                
+                cases.forEach((caseData, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'level-card';
+                    card.onclick = () => showCase(category, index);
+                    
+                    const stars = '⭐'.repeat(caseData.level);
+                    
+                    card.innerHTML = `
+                        <div class="level-stars">${stars}</div>
+                        <div class="level-title">Niveau ${caseData.level}</div>
+                        <div class="level-desc">${caseData.title}</div>
+                    `;
+                    
+                    grid.appendChild(card);
+                });
+            });
+        }
+
+        // Afficher une catégorie
+        function showCategory(category) {
+            document.getElementById('mainNav').style.display = 'none';
+            document.getElementById(`${category}Container`).classList.add('active');
+        }
+
+        // Retour au menu principal
+        function backToMain() {
+            document.getElementById('mainNav').style.display = 'flex';
+            document.querySelectorAll('.levels-container').forEach(container => {
+                container.classList.remove('active');
+            });
+        }
+
+        // Afficher un cas dans le modal
+        function showCase(category, index) {
+            const caseData = casesData[category][index];
+            const modal = document.getElementById('caseModal');
+            const content = document.getElementById('modalContent');
+            
+            const categoryLabels = {
+                'pratique': 'PRATIQUE',
+                'apprendre': 'APPRENDRE',
+                'creer': 'CRÉER'
+            };
+            
+            const stars = '⭐'.repeat(caseData.level);
+            
+            const evalHTML = caseData.eval.map(item => `<li>${item}</li>`).join('');
+            
+            content.innerHTML = `
+                <div class="case-header">
+                    <span class="case-type ${category}">${categoryLabels[category]}</span>
+                    <h2 class="case-title">${caseData.title}</h2>
+                    <div class="case-level">${stars} Niveau ${caseData.level}</div>
+                </div>
+                <div class="case-content">
+                    <h3>Situation</h3>
+                    <p>${caseData.description}</p>
+                    
+                    <div class="case-consigne">
+                        <span class="case-arrow">→</span> ${caseData.consigne}
+                    </div>
+                    
+                    <div class="grille-eval">
+                        <h4>Grille d'évaluation</h4>
+                        <ul>${evalHTML}</ul>
+                    </div>
+                    
+                    <h3>À toi de jouer !</h3>
+                    <p>Rédige ton prompt en appliquant le modèle <strong>RoTaConFor</strong> :</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Rôle</strong> : Qui doit être l'IA pour cette tâche ?</li>
+                        <li><strong>Tâche</strong> : Que doit-elle faire précisément ?</li>
+                        <li><strong>Contexte</strong> : Quels détails sont importants ?</li>
+                        <li><strong>Format</strong> : Comment veux-tu le résultat ?</li>
+                    </ul>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // Fermer le modal
+        function closeModal() {
+            document.getElementById('caseModal').classList.remove('active');
+        }
+
+        // Fermer le modal en cliquant à l'extérieur
+        document.getElementById('caseModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialisation
+        generateLevelCards();
+    </script>
+</body>
+</html>
