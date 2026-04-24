@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMPT QUEST — RoTaConFor Training</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROMPT QUEST — RoTaConFor Training</title>
+<style>
         /* ============================================
            PALETTE RETROFUTURISME v2.0
            ============================================ */
@@ -632,125 +633,118 @@
     </style>
 </head>
 <body>
-    <!-- Cadre Art Nouveau englobant -->
-    <div class="page-frame">
-        <!-- Motifs floraux aux 4 coins -->
-        <div class="corner-flourish top-left">
-            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"/>
-                <path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="42" cy="12" r="3" opacity="0.6"/>
-                <circle cx="48" cy="8" r="2" opacity="0.4"/>
-            </svg>
-        </div>
-        <div class="corner-flourish top-right">
-            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"/>
-                <path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="42" cy="12" r="3" opacity="0.6"/>
-                <circle cx="48" cy="8" r="2" opacity="0.4"/>
-            </svg>
-        </div>
-        <div class="corner-flourish bottom-left">
-            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"/>
-                <path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="42" cy="12" r="3" opacity="0.6"/>
-                <circle cx="48" cy="8" r="2" opacity="0.4"/>
-            </svg>
-        </div>
-        <div class="corner-flourish bottom-right">
-            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"/>
-                <path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="42" cy="12" r="3" opacity="0.6"/>
-                <circle cx="48" cy="8" r="2" opacity="0.4"/>
-            </svg>
-        </div>
-
-        <!-- Header -->
-        <header class="retro-header">
-            <h1>PROMPT QUEST</h1>
-            <div class="subtitle">RoTaConFor Training Camp</div>
-            <p class="tagline">Maîtrise l'art du prompting — 15 cas pratiques pour devenir un expert</p>
-        </header>
-
-        <!-- Séparateur Art Nouveau -->
-        <div class="retro-separator">
-            <span class="flourish">❧</span>
-        </div>
-
-        <!-- Navigation principale -->
-        <nav class="main-nav" id="mainNav">
-            <div class="nav-portal pratique" onclick="showCategory('pratique')">
-                <div class="portal-icon">🎯</div>
-                <div class="portal-title">PRATIQUE</div>
-                <div class="portal-desc">Résoudre des vrais problèmes du quotidien</div>
-            </div>
-
-            <div class="nav-portal apprendre" onclick="showCategory('apprendre')">
-                <div class="portal-icon">🧠</div>
-                <div class="portal-title">APPRENDRE</div>
-                <div class="portal-desc">Booster ton cerveau et tes compétences</div>
-            </div>
-
-            <div class="nav-portal creer" onclick="showCategory('creer')">
-                <div class="portal-icon">🎨</div>
-                <div class="portal-title">CRÉER</div>
-                <div class="portal-desc">Inventer des trucs cool et originaux</div>
-            </div>
-        </nav>
-
-        <!-- Containers de niveaux -->
-        <div id="pratiqueContainer" class="levels-container">
-            <div class="levels-header">
-                <h2>🎯 PRATIQUE — Résoudre des problèmes</h2>
-                <button class="retro-btn-pill" onclick="backToMain()">
-                    <span class="retro-btn-pill-text">Retour</span>
-                    <span class="retro-btn-pill-icon">←</span>
-                </button>
-            </div>
-            <div class="levels-grid" id="pratiqueGrid"></div>
-        </div>
-
-        <div id="apprendreContainer" class="levels-container">
-            <div class="levels-header">
-                <h2>🧠 APPRENDRE — Développer tes compétences</h2>
-                <button class="retro-btn-pill" onclick="backToMain()">
-                    <span class="retro-btn-pill-text">Retour</span>
-                    <span class="retro-btn-pill-icon">←</span>
-                </button>
-            </div>
-            <div class="levels-grid" id="apprendreGrid"></div>
-        </div>
-
-        <div id="creerContainer" class="levels-container">
-            <div class="levels-header">
-                <h2>🎨 CRÉER — Inventer et imaginer</h2>
-                <button class="retro-btn-pill" onclick="backToMain()">
-                    <span class="retro-btn-pill-text">Retour</span>
-                    <span class="retro-btn-pill-icon">←</span>
-                </button>
-            </div>
-            <div class="levels-grid" id="creerGrid"></div>
-        </div>
-
-        <!-- Footer -->
-        <footer class="retro-footer">
-            <p><strong>PROMPT QUEST</strong> © 2025 — Formation IA & Prompting</p>
-            <p class="footer-model">Modèle RoTaConFor : Rôle · Tâche · Contexte · Format</p>
-        </footer>
-    </div>
-
-    <!-- Modal pour afficher les cas -->
-    <div id="caseModal" class="modal">
-        <div class="modal-content">
-            <div class="close-modal" onclick="closeModal()">✕</div>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
-    <script>
+<!-- Cadre Art Nouveau englobant -->
+<div class="page-frame">
+<!-- Motifs floraux aux 4 coins -->
+<div class="corner-flourish top-left">
+<svg viewbox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"></path>
+<path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+<circle cx="42" cy="12" opacity="0.6" r="3"></circle>
+<circle cx="48" cy="8" opacity="0.4" r="2"></circle>
+</svg>
+</div>
+<div class="corner-flourish top-right">
+<svg viewbox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"></path>
+<path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+<circle cx="42" cy="12" opacity="0.6" r="3"></circle>
+<circle cx="48" cy="8" opacity="0.4" r="2"></circle>
+</svg>
+</div>
+<div class="corner-flourish bottom-left">
+<svg viewbox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"></path>
+<path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+<circle cx="42" cy="12" opacity="0.6" r="3"></circle>
+<circle cx="48" cy="8" opacity="0.4" r="2"></circle>
+</svg>
+</div>
+<div class="corner-flourish bottom-right">
+<svg viewbox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+<path d="M5,55 Q5,30 15,20 Q25,10 40,8 Q30,15 25,25 Q20,35 18,50 Q15,40 12,35 Q8,45 5,55 Z" opacity="0.8"></path>
+<path d="M10,50 Q12,35 20,28 Q28,20 38,18" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+<circle cx="42" cy="12" opacity="0.6" r="3"></circle>
+<circle cx="48" cy="8" opacity="0.4" r="2"></circle>
+</svg>
+</div>
+<!-- Header -->
+<header class="retro-header">
+<h1>PROMPT QUEST</h1>
+<div class="subtitle">RoTaConFor Training Camp</div>
+<p class="tagline">Maîtrise l'art du prompting — 15 cas pratiques pour devenir un expert</p>
+</header>
+<!-- Séparateur Art Nouveau -->
+<div class="retro-separator">
+<span class="flourish">❧</span>
+</div>
+<!-- Navigation principale -->
+<nav class="main-nav" id="mainNav">
+<div class="nav-portal pratique" onclick="showCategory('pratique')">
+<div class="portal-icon">🎯</div>
+<div class="portal-title">PRATIQUE</div>
+<div class="portal-desc">Résoudre des vrais problèmes du quotidien</div>
+</div>
+<div class="nav-portal apprendre" onclick="showCategory('apprendre')">
+<div class="portal-icon">🧠</div>
+<div class="portal-title">APPRENDRE</div>
+<div class="portal-desc">Booster ton cerveau et tes compétences</div>
+</div>
+<div class="nav-portal creer" onclick="showCategory('creer')">
+<div class="portal-icon">🎨</div>
+<div class="portal-title">CRÉER</div>
+<div class="portal-desc">Inventer des trucs cool et originaux</div>
+</div>
+</nav>
+<!-- Containers de niveaux -->
+<div class="levels-container" id="pratiqueContainer">
+<div class="levels-header">
+<h2>🎯 PRATIQUE — Résoudre des problèmes</h2>
+<button class="retro-btn-pill" onclick="backToMain()">
+<span class="retro-btn-pill-text">Retour</span>
+<span class="retro-btn-pill-icon">←</span>
+</button>
+</div>
+<div class="levels-grid" id="pratiqueGrid"></div>
+</div>
+<div class="levels-container" id="apprendreContainer">
+<div class="levels-header">
+<h2>🧠 APPRENDRE — Développer tes compétences</h2>
+<button class="retro-btn-pill" onclick="backToMain()">
+<span class="retro-btn-pill-text">Retour</span>
+<span class="retro-btn-pill-icon">←</span>
+</button>
+</div>
+<div class="levels-grid" id="apprendreGrid"></div>
+</div>
+<div class="levels-container" id="creerContainer">
+<div class="levels-header">
+<h2>🎨 CRÉER — Inventer et imaginer</h2>
+<button class="retro-btn-pill" onclick="backToMain()">
+<span class="retro-btn-pill-text">Retour</span>
+<span class="retro-btn-pill-icon">←</span>
+</button>
+</div>
+<div class="levels-grid" id="creerGrid"></div>
+</div>
+<!-- Footer -->
+<footer class="retro-footer">
+<p><strong>PROMPT QUEST</strong> © 2025 — Formation IA &amp; Prompting</p>
+<p class="footer-model">Modèle RoTaConFor : Rôle · Tâche · Contexte · Format</p>
+</footer>
+<div class="ab-attribution" style="text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(128,128,128,0.25);font-size:0.8rem;opacity:0.65;">
+<a href="https://www.linkedin.com/in/antonin-bareau/" rel="noopener" style="font-weight:bold;color:inherit;text-decoration:none;" target="_blank">Antonin Bareau</a>
+   — 
+  <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener" style="color:inherit;text-decoration:none;" target="_blank">Licence CC BY-SA 4.0</a>
+</div></div>
+<!-- Modal pour afficher les cas -->
+<div class="modal" id="caseModal">
+<div class="modal-content">
+<div class="close-modal" onclick="closeModal()">✕</div>
+<div id="modalContent"></div>
+</div>
+</div>
+<script>
         // Base de données des 15 cas pratiques
         const casesData = {
             pratique: [
@@ -1028,11 +1022,6 @@
                             <li><strong>Format</strong> : Comment veux-tu le résultat ?</li>
                         </ul>
                     </div>
-                <div class="ab-attribution" style="text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(128,128,128,0.25);font-size:0.8rem;opacity:0.65;">
-  <a href="https://www.linkedin.com/in/antonin-bareau/" target="_blank" rel="noopener" style="font-weight:bold;color:inherit;text-decoration:none;">Antonin Bareau</a>
-  &nbsp;&mdash;&nbsp;
-  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">Licence CC BY-SA 4.0</a>
-</div>
 </div>
             `;
             
@@ -1063,6 +1052,5 @@
         // Initialisation
         generateLevelCards();
     </script>
-
 </body>
 </html>
